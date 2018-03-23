@@ -10,7 +10,7 @@ request.onload= function(){
         for(j = i + 1; j < data.length; j ++){
 
             if(data[i]['bookID'] == data[j]['bookID']){   
-                data[i].quantity ++;
+                data[i].quantity += data[j].quantity;
                 data.splice(j,1);
             }
         }
