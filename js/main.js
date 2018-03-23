@@ -42,15 +42,14 @@ function bookHTML(bookData){
 
 function clicked(e){
     var btn = document.getElementById(e);
-    var quantity = btn.previousSibling.innerHTML;
-    console.log("yo : " + e +" : " + quantity);
+    var quantity = btn.previousElementSibling.value;
+    console.log(quantity);
 
     var borrowRequest = new XMLHttpRequest();
     borrowRequest.onreadystatechange = function(){
         if(this.status == 201){
             alert("ok");
             console.log("ok");
-            
         }
 
         if(this.status == 403){
@@ -60,12 +59,11 @@ function clicked(e){
         if(this.status == 404){
             alert("Book with given id not found")
         }
-
-        
     }
 
     var url = 'http://35.185.179.159:8080/api/borrower/books/';
-    url += e + '/borrow/1';
+    url += e + '/borrow/';
+    url += quantity;
 
     borrowRequest.open("POST",url,true);
     borrowRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
