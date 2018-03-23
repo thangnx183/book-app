@@ -4,14 +4,17 @@ var request = new XMLHttpRequest();
 
 request.open("GET",'http://35.185.179.159:8080/api/borrower/borrowedBooks');
 request.onload= function(){
-    var data = JSON.parse(request.responseText);
+    data = JSON.parse(request.responseText);
+    console.log(data);
 
     for(i = 0; i < data.length - 1; i ++){
-        for(j = i + 1; j < data.length; j ++){
+        for(j = i + 1; j < data.length;){
 
             if(data[i]['bookID'] == data[j]['bookID']){   
                 data[i].quantity += data[j].quantity;
                 data.splice(j,1);
+            }else{
+                j ++;
             }
         }
     }
