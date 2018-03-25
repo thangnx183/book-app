@@ -1,5 +1,6 @@
 var bookContainer = document.getElementById('books-space');
-var borrowedBook = document.getElementById('borrow-book')
+var borrowedBook = document.getElementById('borrow-book');
+var borrowed = [];
 var data;
 var request = new XMLHttpRequest();
 // comment democontent
@@ -14,16 +15,16 @@ request.onload= function(){
         data[i].canBeBorrowed = data[i].quantity - data[i].borrowedQuantity;
     }
 
-    renderHTML(data);
+    renderHTML(data,bookContainer);
 }
 request.send();
 
-function renderHTML(dat){
+function renderHTML(dat, position){
     var stringHTML = "";
     for(var i = 0; i < dat.length; i++){
         stringHTML += bookHTML(dat[i]);
     }
-    bookContainer.insertAdjacentHTML("beforeend",stringHTML);
+    position.insertAdjacentHTML("beforeend",stringHTML);
 }
 
 function bookHTML(bookData){
@@ -51,6 +52,7 @@ function clicked(id, quantity){
         if(this.status == 201){
             alert("ok");
             console.log("ok");
+            successed(id, quantity);
         }
 
         if(this.status == 403){
@@ -69,5 +71,14 @@ function clicked(id, quantity){
     borrowRequest.open("POST",url,true);
     borrowRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     borrowRequest.send();
+}
 
+function successed(id, quantity){
+    if(borrowed.find(book=>book.id === id) === undefined){
+        var x = JSON.parse(JSON.stringify(data.find(book=>book.id === id)));
+        x.borrowedQuantity = quantity;
+        borrowed.push(x);
+    }else{
+        borrowed.find(book=>book.id === id).borrowedQuantity  += quantity;
+    }
 }
