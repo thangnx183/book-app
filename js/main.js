@@ -1,25 +1,17 @@
 var bookContainer = document.getElementById('books-space');
+var borrowedBook = document.getElementById('borrow-book')
 var data;
 var request = new XMLHttpRequest();
 // comment democontent
 // new api
 
 
-request.open("GET",'http://35.185.179.159:8080/api/borrower/borrowedBooks');
+request.open("GET",'http://35.185.179.159:8080/api/books');
 request.onload= function(){
     data = JSON.parse(request.responseText);
     console.log(data);
-
-    for(i = 0; i < data.length - 1; i ++){
-        for(j = i + 1; j < data.length;){
-
-            if(data[i]['bookID'] == data[j]['bookID']){   
-                data[i].quantity += data[j].quantity;
-                data.splice(j,1);
-            }else{
-                j ++;
-            }
-        }
+    for (var i = 0;i < data.length; i ++){
+        data[i].canBeBorrowed = data[i].quantity - data[i].borrowedQuantity;
     }
 
     renderHTML(data);
@@ -39,17 +31,20 @@ function bookHTML(bookData){
     insertHTML += "<div class = 'book-space'>";
     insertHTML += "<p> Title : " + bookData.title + "</p>";
     insertHTML += "<p> Author : " + bookData.author + "</p>";
-    insertHTML += "<p> Quantity : " + bookData.quantity + "</p>";
+    insertHTML += "<p> Quantity : " + bookData.canBeBorrowed + "</p>";
     insertHTML += "<input type='number' min=0> </input>"
-    insertHTML += "<button id = '"+ bookData.bookID +"' class = 'btn' onclick='clicked(this.id)'> Borrow </button>";
+    insertHTML += "<button id = '"+ bookData.id +"' class = 'btn' onclick='clicked(this.id, getQuantity(this.id))'> Borrow </button>";
     insertHTML += "</div>";
     return insertHTML;
 }
 
-function clicked(e){
-    var btn = document.getElementById(e);
-    var quantity = btn.previousElementSibling.value;
+function getQuantity(id){
+    return document.getElementById(id).previousElementSibling.value;
+}
+
+function clicked(id, quantity){
     console.log(quantity);
+    console.log(id);
 
     var borrowRequest = new XMLHttpRequest();
     borrowRequest.onreadystatechange = function(){
@@ -68,7 +63,7 @@ function clicked(e){
     }
 
     var url = 'http://35.185.179.159:8080/api/borrower/books/';
-    url += e + '/borrow/';
+    url += id + '/borrow/';
     url += quantity;
 
     borrowRequest.open("POST",url,true);
