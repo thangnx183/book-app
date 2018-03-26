@@ -33,7 +33,7 @@ function bookHTML(bookData){
     insertHTML += "<p> Title : " + bookData.title + "</p>";
     insertHTML += "<p> Author : " + bookData.author + "</p>";
     insertHTML += "<p> Quantity : " + bookData.canBeBorrowed + "</p>";
-    insertHTML += "<input type='number' min=0 onfocus='myfocus()'> </input>"
+    insertHTML += "<input type='number' min=0 onfocus='myfocus()' required> </input>"
     insertHTML += "<button id = '"+ bookData.id +"' class = 'btn' onclick='clicked(this.id, getQuantity(this.id))'> Borrow </button>";
     insertHTML += "<a></a>";
     insertHTML += "</div>";
@@ -52,28 +52,31 @@ function getQuantity(id){
 }
 
 function clicked(id, quantity){
-    console.log(quantity);
-    console.log(id);
+    //console.log(quantity);
+    //console.log(id);
+    console.log("clicked");
     var al = document.getElementById(id).parentElement.lastElementChild;
 
     var borrowRequest = new XMLHttpRequest();
     borrowRequest.onreadystatechange = function(){
-        if(this.status == 201){
+        if(this.status == 201 && this.readyState == 4){
             //alert("ok");
             al.innerHTML = "ok";
-            //successed(id, quantity);
+            console.log("ajax-----");
+            successed(id, quantity);
+            return;
         }
 
-        if(this.status == 400){
+        if(this.status == 400 && this.readyState == 4){
             //alert('Borrow quantity must be greater than 0');
             al.innerHTML = "Borrow quantity must be greater than 0";
         }
 
-        if(this.status == 403){
+        if(this.status == 403 && this.readyState == 4){
             al.innerHTML = "Borrow quantity is greater than available book quantity, cannot borrow";
         }
 
-        if(this.status == 404){
+        if(this.status == 404 && this.readyState == 4){
             al.innerHTML = "Book with given id not found";
         }
     }
@@ -88,11 +91,15 @@ function clicked(id, quantity){
 }
 
 function successed(id, quantity){
+    //console.log("quantity: "+quantity);
     if(borrowed.find(book=>book.id === id) === undefined){
+      //  console.log("ok");
         var x = JSON.parse(JSON.stringify(data.find(book=>book.id === id)));
-        x.borrowedQuantity = quantity;
+        x.borrowedQuantity = parseInt(quantity);
+        //console.log(x);
         borrowed.push(x);
     }else{
-        borrowed.find(book=>book.id === id).borrowedQuantity  += quantity;
+        //console.log("error")
+        borrowed.find(book=>book.id === id).borrowedQuantity  +=parseInt(quantity);
     }
 }

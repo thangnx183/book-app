@@ -1,0 +1,23 @@
+body{
+    background: pink;
+    position: relative;
+    top: 50px;
+    left: 50px;
+
+}
+
+input{
+    background: yellow
+}
+
+input:focus{
+    background: white
+}
+
+input:blur{
+    background: yellow
+}
+
+a{
+    color:red
+}
