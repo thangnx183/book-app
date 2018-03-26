@@ -55,6 +55,10 @@ function clicked(id, quantity){
             successed(id, quantity);
         }
 
+        if(this.status == 400){
+            alert('Borrow quantity must be greater than 0');
+        }
+
         if(this.status == 403){
             alert("Borrow quantity is greater than available book quantity, cannot borrow");
         }
