@@ -77,7 +77,7 @@ function clicked(id, quantity){
         }
 
         if(this.status == 404 && this.readyState == 4){
-            al.innerHTML = "Book with given id not found";
+            al.innerHTML = "U need to fill the blank";
         }
     }
 
