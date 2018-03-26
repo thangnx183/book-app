@@ -12,7 +12,7 @@ request.onload= function(){
     data = JSON.parse(request.responseText);
     console.log(data);
     for (var i = 0;i < data.length; i ++){
-        data[i].canBeBorrowed = data[i].quantity - data[i].borrowedQuantity;
+        data[i].canBeBorrowed = data[i].quantity - data[i].borrowedQuantity - 1;
     }
 
     renderHTML(data,bookContainer);
@@ -59,9 +59,9 @@ function clicked(id, quantity){
     var borrowRequest = new XMLHttpRequest();
     borrowRequest.onreadystatechange = function(){
         if(this.status == 201){
-            alert("ok");
+            //alert("ok");
             al.innerHTML = "ok";
-            successed(id, quantity);
+            //successed(id, quantity);
         }
 
         if(this.status == 400){
