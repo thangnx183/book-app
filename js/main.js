@@ -33,10 +33,18 @@ function bookHTML(bookData){
     insertHTML += "<p> Title : " + bookData.title + "</p>";
     insertHTML += "<p> Author : " + bookData.author + "</p>";
     insertHTML += "<p> Quantity : " + bookData.canBeBorrowed + "</p>";
-    insertHTML += "<input type='number' min=0> </input>"
+    insertHTML += "<input type='number' min=0 onfocus='myfocus()'> </input>"
     insertHTML += "<button id = '"+ bookData.id +"' class = 'btn' onclick='clicked(this.id, getQuantity(this.id))'> Borrow </button>";
+    insertHTML += "<a></a>";
     insertHTML += "</div>";
     return insertHTML;
+}
+
+function myfocus(){
+    var aTag = document.getElementsByTagName("A");
+    for (var i = 0; i < aTag.length; i ++){
+        aTag[i].innerHTML = "";
+    }
 }
 
 function getQuantity(id){
@@ -46,25 +54,27 @@ function getQuantity(id){
 function clicked(id, quantity){
     console.log(quantity);
     console.log(id);
+    var al = document.getElementById(id).parentElement.lastElementChild;
 
     var borrowRequest = new XMLHttpRequest();
     borrowRequest.onreadystatechange = function(){
         if(this.status == 201){
             alert("ok");
-            console.log("ok");
+            al.innerHTML = "ok";
             successed(id, quantity);
         }
 
         if(this.status == 400){
-            alert('Borrow quantity must be greater than 0');
+            //alert('Borrow quantity must be greater than 0');
+            al.innerHTML = "Borrow quantity must be greater than 0";
         }
 
         if(this.status == 403){
-            alert("Borrow quantity is greater than available book quantity, cannot borrow");
+            al.innerHTML = "Borrow quantity is greater than available book quantity, cannot borrow";
         }
 
         if(this.status == 404){
-            alert("Book with given id not found")
+            al.innerHTML = "Book with given id not found";
         }
     }
 
