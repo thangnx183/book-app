@@ -32,7 +32,7 @@ function bookHTML(bookData){
     insertHTML += "<div class = 'book-space'>";
     insertHTML += "<p> Title : " + bookData.title + "</p>";
     insertHTML += "<p> Author : " + bookData.author + "</p>";
-    insertHTML += "<p> Quantity : " + bookData.canBeBorrowed + "</p>";
+    insertHTML += "<p>Quantity : " + bookData.canBeBorrowed + "</p>";
     insertHTML += "<input type='number' min=0 onfocus='myfocus()' required> </input>"
     insertHTML += "<button id = '"+ bookData.id +"' class = 'btn' onclick='clicked(this.id, getQuantity(this.id))'> Borrow </button>";
     insertHTML += "<a></a>";
@@ -54,7 +54,7 @@ function getQuantity(id){
 function clicked(id, quantity){
     //console.log(quantity);
     //console.log(id);
-    console.log("clicked");
+    //console.log("clicked");
     var al = document.getElementById(id).parentElement.lastElementChild;
 
     var borrowRequest = new XMLHttpRequest();
@@ -62,7 +62,7 @@ function clicked(id, quantity){
         if(this.status == 201 && this.readyState == 4){
             //alert("ok");
             al.innerHTML = "ok";
-            console.log("ajax-----");
+            //console.log("ajax-----");
             successed(id, quantity);
             return;
         }
@@ -100,6 +100,22 @@ function successed(id, quantity){
         borrowed.push(x);
     }else{
         //console.log("error")
-        borrowed.find(book=>book.id === id).borrowedQuantity  +=parseInt(quantity);
+        borrowed.find(book=>book.id === id).borrowedQuantity  += parseInt(quantity);
     }
+
+    var canBeBorrowedHtml = document.getElementById(id).previousElementSibling.previousElementSibling;
+//    console.log(canBeBorrowedHtml.innerHTML.slice(11,canBeBorrowedHtml.innerHTML.length));
+    canBeBorrowedHtml.innerHTML = parseInt(canBeBorrowedHtml.innerHTML.slice(11,canBeBorrowedHtml.innerHTML.length)) - parseInt(quantity);
+    canBeBorrowedHtml.innerHTML = "Quantity : " + canBeBorrowedHtml.innerHTML;
+
+
+    borrowedBook.innerHTML = " ";
+    var bookHtml = "" ;
+
+    for (var i = 0; i < borrowed.length; i ++){
+        bookHtml += "<p>"+borrowed[i].title+"</p>";
+        bookHtml += "<p>"+borrowed[i].borrowedQuantity+"</p>";
+    }
+
+    borrowedBook.insertAdjacentHTML("beforeend",bookHtml);
 }
