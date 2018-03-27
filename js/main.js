@@ -2,6 +2,7 @@ var bookContainer = document.getElementById('books-space');
 var borrowedBook = document.getElementById('borrow-book');
 var borrowed = [];
 var data;
+var data2;
 var request = new XMLHttpRequest();
 
 /*
@@ -10,7 +11,7 @@ var request = new XMLHttpRequest();
 request.open("GET",'http://35.185.179.159:8080/api/books');
 request.onload= function(){
     data = JSON.parse(request.responseText);
-    console.log(data);
+    //console.log(data);
     for (var i = 0;i < data.length; i ++){
         data[i].canBeBorrowed = data[i].quantity - data[i].borrowedQuantity - 1;
     }
@@ -96,10 +97,10 @@ function successed(id, quantity){
     //console.log("quantity: "+quantity);
     //if(borrowed.find(book=>book.id === id) === undefined){
       //  console.log("ok");
-    var x = JSON.parse(JSON.stringify(data.find(book=>book.id === id)));
-    x.borrowedQuantity = parseInt(quantity);
+    //var x = JSON.parse(JSON.stringify(data.find(book=>book.id === id)));
+    //x.borrowedQuantity = parseInt(quantity);
         //console.log(x);
-    borrowed.push(x);
+    //borrowed.push(x);
     //}else{
         //console.log("error")
     //    borrowed.find(book=>book.id === id).borrowedQuantity  += parseInt(quantity);
@@ -110,7 +111,8 @@ function successed(id, quantity){
     canBeBorrowedHtml.innerHTML = parseInt(canBeBorrowedHtml.innerHTML.slice(11,canBeBorrowedHtml.innerHTML.length)) - parseInt(quantity);
     canBeBorrowedHtml.innerHTML = "Quantity : " + canBeBorrowedHtml.innerHTML;
 
-
+    makeList();
+/*
     borrowedBook.innerHTML = " ";
     var bookHtml =  "<div style='margin-bottom:20px; position: fixed;top: 58px; background-color:#fff' class='form-group' >" ;
 
@@ -121,8 +123,35 @@ function successed(id, quantity){
     bookHtml += "</div>";
 
     borrowedBook.insertAdjacentHTML("beforeend",bookHtml);
+*/
 }
 
+makeList();
+
+function makeList(){
+    var request2 = new XMLHttpRequest();
+    request2.open("GET","http://35.185.179.159:8080/api/borrower/borrowedBooks");
+    request2.onreadystatechange = function(){
+        if(this.status == 200 && this.readyState == 4){
+            data2 = JSON.parse(request2.responseText);
+            console.log(data2);
+
+            borrowedBook.innerHTML = " ";
+            var bookHtml =  "<div style='margin-bottom:20px;top: 58px; background-color:#fff' class='form-group' >" ;
+        
+            for (var i = 0; i < data2.length; i ++){
+                bookHtml += "<p>"+data2[i].title+"</p>";
+                bookHtml += "<p>Quantity : "+data2[i].quantity+"</p>";
+            }
+            bookHtml += "</div>";
+        
+            borrowedBook.insertAdjacentHTML("beforeend",bookHtml);
+        
+        }
+    }
+
+    request2.send();
+}
 
 
 
