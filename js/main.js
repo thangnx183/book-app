@@ -3,10 +3,10 @@ var borrowedBook = document.getElementById('borrow-book');
 var borrowed = [];
 var data;
 var request = new XMLHttpRequest();
-// comment democontent
-// new api
 
-
+/*
+    initalize ajax request to get data from server 
+*/
 request.open("GET",'http://35.185.179.159:8080/api/books');
 request.onload= function(){
     data = JSON.parse(request.responseText);
@@ -112,7 +112,7 @@ function successed(id, quantity){
 
 
     borrowedBook.innerHTML = " ";
-    var bookHtml =  "<div style='margin-bottom:20px; position: fixed;top: 70px; background-color:#fff' class='form-group' >" ;
+    var bookHtml =  "<div style='margin-bottom:20px; position: fixed;top: 58px; background-color:#fff' class='form-group' >" ;
 
     for (var i = 0; i < borrowed.length; i ++){
         bookHtml += "<p>"+borrowed[i].title+"</p>";
@@ -122,3 +122,10 @@ function successed(id, quantity){
 
     borrowedBook.insertAdjacentHTML("beforeend",bookHtml);
 }
+
+
+
+
+
+
+
