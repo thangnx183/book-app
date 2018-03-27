@@ -94,16 +94,16 @@ function clicked(id, quantity){
 
 function successed(id, quantity){
     //console.log("quantity: "+quantity);
-    if(borrowed.find(book=>book.id === id) === undefined){
+    //if(borrowed.find(book=>book.id === id) === undefined){
       //  console.log("ok");
-        var x = JSON.parse(JSON.stringify(data.find(book=>book.id === id)));
-        x.borrowedQuantity = parseInt(quantity);
+    var x = JSON.parse(JSON.stringify(data.find(book=>book.id === id)));
+    x.borrowedQuantity = parseInt(quantity);
         //console.log(x);
-        borrowed.push(x);
-    }else{
+    borrowed.push(x);
+    //}else{
         //console.log("error")
-        borrowed.find(book=>book.id === id).borrowedQuantity  += parseInt(quantity);
-    }
+    //    borrowed.find(book=>book.id === id).borrowedQuantity  += parseInt(quantity);
+    //}
 
     var canBeBorrowedHtml = document.getElementById(id).parentElement.parentElement.previousElementSibling;
    //console.log(canBeBorrowedHtml.innerHTML.slice(11,canBeBorrowedHtml.innerHTML.length));
