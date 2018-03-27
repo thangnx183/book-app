@@ -140,8 +140,13 @@ function makeList(){
             var bookHtml =  "<div style='margin-bottom:20px;top: 58px; background-color:#fff' class='form-group' >" ;
         
             for (var i = 0; i < data2.length; i ++){
-                bookHtml += "<p>"+data2[i].title+"</p>";
-                bookHtml += "<p>Quantity : "+data2[i].quantity+"</p>";
+                if (data2[i].returnedDate == -1){
+                    bookHtml += "<div style='margin-bottom:20px' class='form-group'>"
+                    bookHtml += "<p>"+data2[i].title+"</p>";
+                    bookHtml += "<p>Quantity : "+data2[i].quantity+"</p>";
+                    bookHtml += "<p>Date : "+ Date(data2[i].createdDate).toString().slice(4,15) +"</p>"
+                    bookHtml += "</div>"
+                }
             }
             bookHtml += "</div>";
         
