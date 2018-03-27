@@ -1,10 +1,16 @@
 body{
+    display: grid;
     background: pink;
     position: relative;
-    top: 50px;
-    left: 50px;
-
+    margin:10px;
+    font-size: 13px;
 }
+
+#book-space{
+    top:100px;
+}
+
+
 
 input{
     background: yellow
@@ -20,4 +26,14 @@ input:blur{
 
 a{
     color:red
+}
+
+
+
+div{
+    padding:5px;
+}
+label{
+    font-weight: bold;
+    margin-right: 10px;
 }

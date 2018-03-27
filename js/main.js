@@ -28,14 +28,16 @@ function renderHTML(dat, position){
 }
 
 function bookHTML(bookData){
-    insertHTML = "";
-    insertHTML += "<div class = 'book-space'>";
-    insertHTML += "<p> Title : " + bookData.title + "</p>";
-    insertHTML += "<p> Author : " + bookData.author + "</p>";
-    insertHTML += "<p>Quantity : " + bookData.canBeBorrowed + "</p>";
-    insertHTML += "<input type='number' min=0 onfocus='myfocus()' required> </input>"
-    insertHTML += "<button id = '"+ bookData.id +"' class = 'btn' onclick='clicked(this.id, getQuantity(this.id))'> Borrow </button>";
-    insertHTML += "<a></a>";
+    insertHTML =  "<div style='margin-bottom:20px; background-color:#fff' class='form-group' >";
+    //insertHTML +=   "<div class = 'book-space'>";
+    insertHTML +=       "<div> <label> Title:  </label>" + bookData.title + "</div>";
+    insertHTML +=       "<div> <label> Author: </label>" + bookData.author + "</div>";
+    insertHTML +=       "<div>Quantity : " + bookData.canBeBorrowed + "</div>";
+    insertHTML +=       "<div class='row'> <div  class='col-xs-10'> <input  class='form-control' type='number' min=0 onfocus='myfocus()' required> </input>  </div>";
+    insertHTML +=                          "<div class='col-xs-2'> <button id = '"+ bookData.id +"' class = 'btn btn-info form-control input-sm ' onclick='clicked(this.id, getQuantity(this.id))'> Borrow </button> </div>"; 
+    insertHTML +=       "</div>";
+    insertHTML +=       "<a></a>";
+    //insertHTML +=   "</div>";
     insertHTML += "</div>";
     return insertHTML;
 }
@@ -48,14 +50,14 @@ function myfocus(){
 }
 
 function getQuantity(id){
-    return document.getElementById(id).previousElementSibling.value;
+    return document.getElementById(id).parentElement.previousElementSibling.firstElementChild.value;
 }
 
 function clicked(id, quantity){
-    //console.log(quantity);
+    console.log(quantity);
     //console.log(id);
     //console.log("clicked");
-    var al = document.getElementById(id).parentElement.lastElementChild;
+    var al = document.getElementById(id).parentElement.parentElement.nextSibling;
 
     var borrowRequest = new XMLHttpRequest();
     borrowRequest.onreadystatechange = function(){
@@ -103,19 +105,20 @@ function successed(id, quantity){
         borrowed.find(book=>book.id === id).borrowedQuantity  += parseInt(quantity);
     }
 
-    var canBeBorrowedHtml = document.getElementById(id).previousElementSibling.previousElementSibling;
-//    console.log(canBeBorrowedHtml.innerHTML.slice(11,canBeBorrowedHtml.innerHTML.length));
+    var canBeBorrowedHtml = document.getElementById(id).parentElement.parentElement.previousElementSibling;
+   //console.log(canBeBorrowedHtml.innerHTML.slice(11,canBeBorrowedHtml.innerHTML.length));
     canBeBorrowedHtml.innerHTML = parseInt(canBeBorrowedHtml.innerHTML.slice(11,canBeBorrowedHtml.innerHTML.length)) - parseInt(quantity);
     canBeBorrowedHtml.innerHTML = "Quantity : " + canBeBorrowedHtml.innerHTML;
 
 
     borrowedBook.innerHTML = " ";
-    var bookHtml = "" ;
+    var bookHtml =  "<div style='margin-bottom:20px; position: fixed;top: 70px; background-color:#fff' class='form-group' >" ;
 
     for (var i = 0; i < borrowed.length; i ++){
         bookHtml += "<p>"+borrowed[i].title+"</p>";
-        bookHtml += "<p>"+borrowed[i].borrowedQuantity+"</p>";
+        bookHtml += "<p>Quantity : "+borrowed[i].borrowedQuantity+"</p>";
     }
+    bookHtml += "</div>";
 
     borrowedBook.insertAdjacentHTML("beforeend",bookHtml);
 }

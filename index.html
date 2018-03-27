@@ -1,17 +1,29 @@
 <html>
 <head>
     <title>Book app for students</title>
+    <script href="js/js/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/mystyle.css">
-
+    <link rel="stylesheet" type="text/css"  href="css/bootstrap.min.css">
 </head>
 
-<body>    
-   
-    <div id='books-space'></div>
+<body>
+    <div style="margin:00px; position: fixed; top:0px ; background-color:#dee4ed">
+        <div class="header">
+            <nav class="navbar sticky-top navbar-dark bg-white">
+                <div> Books app</div>
+            </nav>
+        </div>
 
-    <div id='borrow-book'></div>
+        <div class="row main-content" style="margin:0px; padding:0px; ">
+            <div id='books-space' class='col-md-7'  ></div>
+
+            <div id='borrow-book' class='col-md-5' style=" min-height:200px"></div>
+
+        </div>
+    </div>
 
     <script src ="js/main.js" ></script>
+
 </body>
 
 </html>
