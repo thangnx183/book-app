@@ -1,13 +1,14 @@
 var bookContainer = document.getElementById('books-space');
 var borrowedBook = document.getElementById('borrow-book');
 var borrowed = [];
-var data;
-var data2;
-var request = new XMLHttpRequest();
+var data;      // data of book in library
+var data2;     // data of borrowed book
+
 
 /*
-    initalize ajax request to get data from server 
+    initalize ajax request to get data of library from server 
 */
+var request = new XMLHttpRequest();
 request.open("GET",'http://35.185.179.159:8080/api/books');
 request.onload= function(){
     data = JSON.parse(request.responseText);
@@ -30,15 +31,13 @@ function renderHTML(dat, position){
 
 function bookHTML(bookData){
     insertHTML =  "<div style='margin-bottom:20px; background-color:#fff' class='form-group' >";
-    //insertHTML +=   "<div class = 'book-space'>";
     insertHTML +=       "<div> <label> Title:  </label>" + bookData.title + "</div>";
     insertHTML +=       "<div> <label> Author: </label>" + bookData.author + "</div>";
     insertHTML +=       "<div>Quantity : " + bookData.canBeBorrowed + "</div>";
     insertHTML +=       "<div class='row'> <div  class='col-xs-10'> <input  class='form-control' type='number' min=0 onfocus='myfocus()' required> </input>  </div>";
     insertHTML +=                          "<div class='col-xs-2'> <button id = '"+ bookData.id +"' class = 'btn btn-info form-control input-sm ' onclick='clicked(this.id, getQuantity(this.id))'> Borrow </button> </div>"; 
     insertHTML +=       "</div>";
-    insertHTML +=       "<a></a>";
-    //insertHTML +=   "</div>";
+    insertHTML +=       "<a style='color:red'></a>";
     insertHTML += "</div>";
     return insertHTML;
 }
@@ -54,24 +53,24 @@ function getQuantity(id){
     return document.getElementById(id).parentElement.previousElementSibling.firstElementChild.value;
 }
 
+/*
+    call back function of "Borrow" button
+*/ 
+
 function clicked(id, quantity){
-    console.log(quantity);
-    //console.log(id);
-    //console.log("clicked");
-    var al = document.getElementById(id).parentElement.parentElement.nextSibling;
+
+    var al = document.getElementById(id).parentElement.parentElement.nextElementSibling;
 
     var borrowRequest = new XMLHttpRequest();
+
     borrowRequest.onreadystatechange = function(){
-        if(this.status == 201 && this.readyState == 4){
-            //alert("ok");
+        if(this.status == 200 && this.readyState == 4){
             al.innerHTML = "ok";
-            //console.log("ajax-----");
             successed(id, quantity);
             return;
         }
 
         if(this.status == 400 && this.readyState == 4){
-            //alert('Borrow quantity must be greater than 0');
             al.innerHTML = "Borrow quantity must be greater than 0";
         }
 
@@ -94,36 +93,14 @@ function clicked(id, quantity){
 }
 
 function successed(id, quantity){
-    //console.log("quantity: "+quantity);
-    //if(borrowed.find(book=>book.id === id) === undefined){
-      //  console.log("ok");
-    //var x = JSON.parse(JSON.stringify(data.find(book=>book.id === id)));
-    //x.borrowedQuantity = parseInt(quantity);
-        //console.log(x);
-    //borrowed.push(x);
-    //}else{
-        //console.log("error")
-    //    borrowed.find(book=>book.id === id).borrowedQuantity  += parseInt(quantity);
-    //}
+
+    console.log("success");
 
     var canBeBorrowedHtml = document.getElementById(id).parentElement.parentElement.previousElementSibling;
-   //console.log(canBeBorrowedHtml.innerHTML.slice(11,canBeBorrowedHtml.innerHTML.length));
     canBeBorrowedHtml.innerHTML = parseInt(canBeBorrowedHtml.innerHTML.slice(11,canBeBorrowedHtml.innerHTML.length)) - parseInt(quantity);
     canBeBorrowedHtml.innerHTML = "Quantity : " + canBeBorrowedHtml.innerHTML;
 
     makeList();
-/*
-    borrowedBook.innerHTML = " ";
-    var bookHtml =  "<div style='margin-bottom:20px; position: fixed;top: 58px; background-color:#fff' class='form-group' >" ;
-
-    for (var i = 0; i < borrowed.length; i ++){
-        bookHtml += "<p>"+borrowed[i].title+"</p>";
-        bookHtml += "<p>Quantity : "+borrowed[i].borrowedQuantity+"</p>";
-    }
-    bookHtml += "</div>";
-
-    borrowedBook.insertAdjacentHTML("beforeend",bookHtml);
-*/
 }
 
 makeList();
