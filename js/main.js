@@ -105,6 +105,10 @@ function successed(id, quantity){
 
 makeList();
 
+
+/*
+    get data of borrowed books from server
+*/
 function makeList(){
     var request2 = new XMLHttpRequest();
     request2.open("GET","http://35.185.179.159:8080/api/borrower/borrowedBooks");
