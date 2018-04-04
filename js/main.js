@@ -21,6 +21,9 @@ request.onload= function(){
 }
 request.send();
 
+// render borrowed books from server
+makeList();
+
 function renderHTML(dat, position){
     var stringHTML = "";
     for(var i = 0; i < dat.length; i++){
@@ -103,9 +106,6 @@ function successed(id, quantity){
     makeList();
 }
 
-makeList();
-
-
 /*
     get data of borrowed books from server
 */
@@ -124,6 +124,7 @@ function makeList(){
                 if (data2[i].returnedDate == -1){
                     bookHtml += "<div style='margin-bottom:20px' class='form-group'>"
                     bookHtml += "<p>"+data2[i].title+"</p>";
+                   // bookHtml += "<p> id : "+data2[i].id+"</p>";
                     bookHtml += "<p>Quantity : "+data2[i].quantity+"</p>";
                     bookHtml += "<p>Date : "+ Date(data2[i].createdDate).toString().slice(4,15) +"</p>"
                     bookHtml += "</div>"
